@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>இனிய தீபாவளி நல்வாழ்த்துக்கள் குணதர்ஷினி</title>
+  
+  <!-- Google Fonts: Noto Sans Tamil & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: #05020a;
+      overflow: hidden;
+      font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
+      height: 100vh;
+      width: 100vw;
+      color: #ffffff;
+    }
+
+    /* Background Canvas */
+    #canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      cursor: crosshair;
+    }
+
+    /* Overlay Content */
+    .container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 20px;
+      pointer-events: none;
+    }
+
+    /* Traditional Diya Header Icon */
+    .diya-icon {
+      width: 70px;
+      height: auto;
+      filter: drop-shadow(0 0 15px #ffaa00);
+      animation: pulseDiya 2s infinite ease-in-out;
+      margin-bottom: 15px;
+    }
+
+    @keyframes pulseDiya {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px #ffaa00); }
+      50% { transform: scale(1.1); filter: drop-shadow(0 0 25px #ff4500); }
+    }
+
+    .sub-title {
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      color: #ffd700;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+      margin-bottom: 10px;
+    }
+
+    /* Glowing Tamil Greeting */
+    .greeting-text {
+      font-family: 'Noto Sans Tamil', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.4;
+      background: linear-gradient(180deg, #ffffff 0%, #ffe600 40%, #ff6a00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255, 100, 0, 0.6);
+      animation: textGlow 3s ease-in-out infinite alternate;
+      max-width: 900px;
+    }
+
+    @keyframes textGlow {
+      0% {
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 20px rgba(255, 69, 0, 0.4));
+      }
+      100% {
+        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 35px rgba(255, 0, 80, 0.8));
+      }
+    }
+
+    .hint-text {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 1px;
+    }
+
+    /* Interactive Control Panel */
+    .controls {
+      position: absolute;
+      bottom: 25px;
+      z-index: 20;
+      display: flex;
+      gap: 12px;
+      pointer-events: auto;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1.5px solid rgba(255, 215, 0, 0.5);
+      color: #ffd700;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover {
+      background: #ffd700;
+      color: #000;
+      box-shadow: 0 0 20px #ffd700;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .greeting-text {
+        font-size: 1.8rem;
+      }
+      .sub-title {
+        font-size: 0.9rem;
+      }
+      .btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="canvas"></canvas>
+
+  <div class="container">
+    <!-- SVG Diya Icon -->
+    <svg class="diya-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M32 4C32 4 20 20 20 32C20 38.6274 25.3726 44 32 44C38.6274 44 44 38.6274 44 32C44 20 32 4 32 4Z" fill="url(#flameGrad)" />
+      <path d="M32 14C32 14 25 24 25 31C25 34.866 28.134 38 32 38C35.866 38 39 34.866 39 31C39 24 32 14 32 14Z" fill="#FFF500" />
+      <path d="M6 38C6 38 12 58 32 58C52 58 58 38 58 38H6Z" fill="#FF8A00" />
+      <path d="M2 38H62V42H2V38Z" fill="#E55100" />
+      <defs>
+        <linearGradient id="flameGrad" x1="32" y1="4" x2="32" y2="44" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#FFD600"/>
+          <stop offset="1" stop-color="#FF3D00"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <div class="sub-title">✨ HAPPY DEEPAVALI ✨</div>
+    <h1 class="greeting-text">இனிய தீபாவளி நல்வாழ்த்துக்கள்<br>குணதர்ஷினி</h1>
+    <p class="hint-text">💥 Tap or click anywhere on the screen to launch custom fireworks!</p>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="grandShowBtn">🎆 Grand Fireworks Show</button>
+    <button class="btn" id="toggleAutoBtn">⏸ Pause Auto Launch</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Configuration & State
+    let autoLaunch = true;
+    let fireworks = [];
+    let particles = [];
+    const colors = [
+      '#ff0055', '#ffdd00', '#00ff99', '#00ccff', 
+      '#ff00ff', '#ff6600', '#ffffff', '#ff3300'
+    ];
+
+    // Helper functions
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function calculateDistance(pt1x, pt1y, pt2x, pt2y) {
+      const xs = pt2x - pt1x;
+      const ys = pt2y - pt1y;
+      return Math.sqrt(xs * xs + ys * ys);
+    }
+
+    // Firework Class (Rocket ascending)
+    class Firework {
+      constructor(sx, sy, tx, ty) {
+        this.x = sx;
+        this.y = sy;
+        this.sx = sx;
+        this.sy = sy;
+        this.tx = tx;
+        this.ty = ty;
+        this.distanceToTarget = calculateDistance(sx, sy, tx, ty);
+        this.distanceTraveled = 0;
+        this.coordinates = [];
+        this.coordinateCount = 3;
+        while (this.coordinateCount--) {
+          this.coordinates.push([this.x, this.y]);
+        }
+        this.angle = Math.atan2(ty - sy, tx - sx);
+        this.speed = 2;
+        this.acceleration = 1.05;
+        this.brightness = random(50, 70);
+        this.targetRadius = 1;
+      }
+
+      update(index) {
+        this.coordinates.pop();
+        this.coordinates.unshift([this.x, this.y]);
+
+        if (this.targetRadius < 8) {
+          this.targetRadius += 0.3;
+        } else {
+          this.targetRadius = 1;
+        }
+
+        this.speed *= this.acceleration;
+        const vx = Math.cos(this.angle) * this.speed;
+        const vy = Math.sin(this.angle) * this.speed;
+        this.distanceTraveled = calculateDistance(this.sx, this.sy, this.x + vx, this.y + vy);
+
+        if (this.distanceTraveled >= this.distanceToTarget) {
+          createParticles(this.tx, this.ty);
+          fireworks.splice(index, 1);
+        } else {
+          this.x += vx;
+          this.y += vy;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+        ctx.lineTo(this.x, this.y);
+        ctx.strokeStyle = `hsl(${random(0, 360)}, 100%, ${this.brightness}%)`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    // Particle Class (Explosion Spark)
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.coordinates = [];
+        this.coordinateCount = 5;
+        while (this.coordinateCount--) {
+          this.coordinates.push([this.x, this.y]);
+        }
+        this.angle = random(0, Math.PI * 2);
+        this.speed = random(1, 10);
+        this.friction = 0.95;
+        this.gravity = 0.98;
+        this.hue = random(0, 360);
+        this.brightness = random(50, 80);
+        this.alpha = 1;
+        this.decay = random(0.015, 0.03);
+      }
+
+      update(index) {
+        this.coordinates.pop();
+        this.coordinates.unshift([this.x, this.y]);
+        this.speed *= this.friction;
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + this.gravity;
+        this.alpha -= this.decay;
+
+        if (this.alpha <= this.decay) {
+          particles.splice(index, 1);
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+        ctx.lineTo(this.x, this.y);
+        ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    function createParticles(x, y) {
+      let particleCount = 80;
+      while (particleCount--) {
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    // Main Animation Loop
+    let timerTotal = 60;
+    let timerTick = 0;
+
+    function loop() {
+      requestAnimationFrame(loop);
+
+      // Create trailing motion blur effect
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.globalCompositeOperation = 'lighter';
+
+      let i = fireworks.length;
+      while (i--) {
+        fireworks[i].draw();
+        fireworks[i].update(i);
+      }
+
+      let j = particles.length;
+      while (j--) {
+        particles.draw ? particles[j].draw() : null;
+        particles[j] ? particles[j].update(j) : null;
+      }
+
+      if (autoLaunch) {
+        if (timerTick >= timerTotal) {
+          fireworks.push(new Firework(width / 2, height, random(100, width - 100), random(50, height / 2)));
+          timerTick = 0;
+          timerTotal = random(20, 40);
+        } {
+          timerTick++;
+        }
+      }
+    }
+
+    // Interactive Triggering on Click/Tap
+    window.addEventListener('pointerdown', (e) => {
+      // Avoid triggering when buttons are clicked
+      if (e.target.tagName === 'BUTTON') return;
+      fireworks.push(new Firework(width / 2, height, e.clientX, e.clientY));
+    });
+
+    // Control Buttons Setup
+    const grandShowBtn = document.getElementById('grandShowBtn');
+    const toggleAutoBtn = document.getElementById('toggleAutoBtn');
+
+    grandShowBtn.addEventListener('click', () => {
+      for (let i = 0; i < 12; i++) {
+        setTimeout(() => {
+          fireworks.push(new Firework(
+            random(width * 0.2, width * 0.8), 
+            height, 
+            random(50, width - 50), 
+            random(50, height * 0.5)
+          ));
+        }, i * 150);
+      }
+    });
+
+    toggleAutoBtn.addEventListener('click', () => {
+      autoLaunch = !autoLaunch;
+      toggleAutoBtn.innerText = autoLaunch ? "⏸ Pause Auto Launch" : "▶ Start Auto Launch";
+    });
+
+    // Start Engine
+    loop();
+  </script>
+</body>
+</html>
