@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+Tamil:wght@700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -20,7 +20,7 @@
     body {
       background-color: #05020a;
       overflow: hidden;
-      font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
+      font-family: 'Poppins', 'Noto Sans Tamil', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
       height: 100vh;
       width: 100vw;
       color: #ffffff;
@@ -82,6 +82,16 @@
       text-shadow: 0 0 20px rgba(255, 100, 0, 0.6);
       animation: textGlow 3s ease-in-out infinite alternate;
       max-width: 900px;
+    }
+
+    /* எமோஜிகள் தெளிவாகத் தெரிவதற்காகத் தனி CSS */
+    .emoji {
+      font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+      -webkit-text-fill-color: initial;
+      background: none;
+      display: inline-block;
+      margin-left: 4px;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
     }
 
     @keyframes textGlow {
@@ -163,7 +173,10 @@
     </svg>
 
     <div class="sub-title">✨ HAPPY DEEPAVALI ✨</div>
-    <h1 class="greeting-text">இனிய தீபாவளி நல்வாழ்த்துக்கள்<br>குணதர்ஷினி🤍🖤🧣🕊</h1>
+    <h1 class="greeting-text">
+      இனிய தீபாவளி நல்வாழ்த்துக்கள்<br>
+      குணதர்ஷினி <span class="emoji">🤍🖤🧣🕊</span>
+    </h1>
     <p class="hint-text">💥 Tap or click anywhere on the screen to launch custom fireworks!</p>
   </div>
 
