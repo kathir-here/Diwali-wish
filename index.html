@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>இனிய தீபாவளி நல்வாழ்த்துக்கள் குணதர்ஷினி</title>
   
-  <!-- Google Fonts: Noto Sans Tamil & Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -27,7 +26,6 @@
       color: #ffffff;
     }
 
-    /* Background Canvas */
     #canvas {
       position: absolute;
       top: 0;
@@ -38,7 +36,6 @@
       cursor: crosshair;
     }
 
-    /* Overlay Content */
     .container {
       position: relative;
       z-index: 10;
@@ -52,7 +49,6 @@
       pointer-events: none;
     }
 
-    /* Traditional Diya Header Icon */
     .diya-icon {
       width: 70px;
       height: auto;
@@ -75,7 +71,6 @@
       margin-bottom: 10px;
     }
 
-    /* Glowing Tamil Greeting */
     .greeting-text {
       font-family: 'Noto Sans Tamil', sans-serif;
       font-size: 2.5rem;
@@ -105,7 +100,6 @@
       letter-spacing: 1px;
     }
 
-    /* Interactive Control Panel */
     .controls {
       position: absolute;
       bottom: 25px;
@@ -220,7 +214,7 @@
           this.coordinates.push([this.x, this.y]);
         }
         this.angle = Math.atan2(ty - sy, tx - sx);
-        this.speed = 2;
+        this.speed = 3;
         this.acceleration = 1.05;
         this.hue = random(0, 360);
       }
@@ -248,7 +242,7 @@
         ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
         ctx.lineTo(this.x, this.y);
         ctx.strokeStyle = `hsl(${this.hue}, 100%, 60%)`;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.stroke();
       }
     }
@@ -263,9 +257,9 @@
           this.coordinates.push([this.x, this.y]);
         }
         this.angle = random(0, Math.PI * 2);
-        this.speed = random(1, 12);
+        this.speed = random(1, 10);
         this.friction = 0.95;
-        this.gravity = 1.2;
+        this.gravity = 0.8;
         this.hue = random(hue - 20, hue + 20);
         this.brightness = random(50, 80);
         this.alpha = 1;
@@ -290,26 +284,26 @@
         ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
         ctx.lineTo(this.x, this.y);
         ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2;
         ctx.stroke();
       }
     }
 
     function createParticles(x, y, hue) {
-      let particleCount = 100;
+      let particleCount = 80;
       while (particleCount--) {
         particles.push(new Particle(x, y, hue));
       }
     }
 
-    let timerTotal = 40;
+    let timerTotal = 30;
     let timerTick = 0;
 
     function loop() {
       requestAnimationFrame(loop);
 
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
       ctx.fillRect(0, 0, width, height);
       ctx.globalCompositeOperation = 'lighter';
 
@@ -319,15 +313,15 @@
         fireworks[i].update(i);
       }
 
-      let j = particles.length;
-      while (j--) {
-        particles[j].draw();
-        particles[j].update(j);
+      let pCount = particles.length;
+      while (pCount--) {
+        particles[pCount].draw();
+        particles[pCount].update(pCount);
       }
 
       if (autoLaunch) {
         if (timerTick >= timerTotal) {
-          fireworks.push(new Firework(width / 2, height, random(100, width - 100), random(50, height / 2)));
+          fireworks.push(new Firework(width / 2, height, random(100, width - 100), random(50, height * 0.5)));
           timerTick = 0;
           timerTotal = random(20, 40);
         } else {
