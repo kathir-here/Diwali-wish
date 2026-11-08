@@ -155,7 +155,6 @@
   <canvas id="canvas"></canvas>
 
   <div class="container">
-    <!-- SVG Diya Icon -->
     <svg class="diya-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M32 4C32 4 20 20 20 32C20 38.6274 25.3726 44 32 44C38.6274 44 44 38.6274 44 32C44 20 32 4 32 4Z" fill="url(#flameGrad)" />
       <path d="M32 14C32 14 25 24 25 31C25 34.866 28.134 38 32 38C35.866 38 39 34.866 39 31C39 24 32 14 32 14Z" fill="#FFF500" />
@@ -191,16 +190,10 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Configuration & State
     let autoLaunch = true;
     let fireworks = [];
     let particles = [];
-    const colors = [
-      '#ff0055', '#ffdd00', '#00ff99', '#00ccff', 
-      '#ff00ff', '#ff6600', '#ffffff', '#ff3300'
-    ];
 
-    // Helper functions
     function random(min, max) {
       return Math.random() * (max - min) + min;
     }
@@ -211,7 +204,6 @@
       return Math.sqrt(xs * xs + ys * ys);
     }
 
-    // Firework Class (Rocket ascending)
     class Firework {
       constructor(sx, sy, tx, ty) {
         this.x = sx;
@@ -230,19 +222,12 @@
         this.angle = Math.atan2(ty - sy, tx - sx);
         this.speed = 2;
         this.acceleration = 1.05;
-        this.brightness = random(50, 70);
-        this.targetRadius = 1;
+        this.hue = random(0, 360);
       }
 
       update(index) {
         this.coordinates.pop();
         this.coordinates.unshift([this.x, this.y]);
-
-        if (this.targetRadius < 8) {
-          this.targetRadius += 0.3;
-        } else {
-          this.targetRadius = 1;
-        }
 
         this.speed *= this.acceleration;
         const vx = Math.cos(this.angle) * this.speed;
@@ -250,7 +235,7 @@
         this.distanceTraveled = calculateDistance(this.sx, this.sy, this.x + vx, this.y + vy);
 
         if (this.distanceTraveled >= this.distanceToTarget) {
-          createParticles(this.tx, this.ty);
+          createParticles(this.tx, this.ty, this.hue);
           fireworks.splice(index, 1);
         } else {
           this.x += vx;
@@ -262,15 +247,14 @@
         ctx.beginPath();
         ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
         ctx.lineTo(this.x, this.y);
-        ctx.strokeStyle = `hsl(${random(0, 360)}, 100%, ${this.brightness}%)`;
+        ctx.strokeStyle = `hsl(${this.hue}, 100%, 60%)`;
         ctx.lineWidth = 2;
         ctx.stroke();
       }
     }
 
-    // Particle Class (Explosion Spark)
     class Particle {
-      constructor(x, y) {
+      constructor(x, y, hue) {
         this.x = x;
         this.y = y;
         this.coordinates = [];
@@ -279,10 +263,10 @@
           this.coordinates.push([this.x, this.y]);
         }
         this.angle = random(0, Math.PI * 2);
-        this.speed = random(1, 10);
+        this.speed = random(1, 12);
         this.friction = 0.95;
-        this.gravity = 0.98;
-        this.hue = random(0, 360);
+        this.gravity = 1.2;
+        this.hue = random(hue - 20, hue + 20);
         this.brightness = random(50, 80);
         this.alpha = 1;
         this.decay = random(0.015, 0.03);
@@ -306,26 +290,24 @@
         ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
         ctx.lineTo(this.x, this.y);
         ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.5;
         ctx.stroke();
       }
     }
 
-    function createParticles(x, y) {
-      let particleCount = 80;
+    function createParticles(x, y, hue) {
+      let particleCount = 100;
       while (particleCount--) {
-        particles.push(new Particle(x, y));
+        particles.push(new Particle(x, y, hue));
       }
     }
 
-    // Main Animation Loop
-    let timerTotal = 60;
+    let timerTotal = 40;
     let timerTick = 0;
 
     function loop() {
       requestAnimationFrame(loop);
 
-      // Create trailing motion blur effect
       ctx.globalCompositeOperation = 'destination-out';
       ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
       ctx.fillRect(0, 0, width, height);
@@ -339,8 +321,8 @@
 
       let j = particles.length;
       while (j--) {
-        particles.draw ? particles[j].draw() : null;
-        particles[j] ? particles[j].update(j) : null;
+        particles[j].draw();
+        particles[j].update(j);
       }
 
       if (autoLaunch) {
@@ -348,20 +330,17 @@
           fireworks.push(new Firework(width / 2, height, random(100, width - 100), random(50, height / 2)));
           timerTick = 0;
           timerTotal = random(20, 40);
-        } {
+        } else {
           timerTick++;
         }
       }
     }
 
-    // Interactive Triggering on Click/Tap
     window.addEventListener('pointerdown', (e) => {
-      // Avoid triggering when buttons are clicked
       if (e.target.tagName === 'BUTTON') return;
       fireworks.push(new Firework(width / 2, height, e.clientX, e.clientY));
     });
 
-    // Control Buttons Setup
     const grandShowBtn = document.getElementById('grandShowBtn');
     const toggleAutoBtn = document.getElementById('toggleAutoBtn');
 
@@ -383,7 +362,6 @@
       toggleAutoBtn.innerText = autoLaunch ? "⏸ Pause Auto Launch" : "▶ Start Auto Launch";
     });
 
-    // Start Engine
     loop();
   </script>
 </body>
