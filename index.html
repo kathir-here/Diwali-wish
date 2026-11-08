@@ -20,7 +20,7 @@
     body {
       background-color: #05020a;
       overflow: hidden;
-      font-family: 'Poppins', 'Noto Sans Tamil', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+      font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
       height: 100vh;
       width: 100vw;
       color: #ffffff;
@@ -84,14 +84,16 @@
       max-width: 900px;
     }
 
-    /* எமோஜிகள் தெளிவாகத் தெரிவதற்காகத் தனி CSS */
+    /* எமோஜிகள் அவற்றின் அசல் வண்ணத்திலேயே (Original Color) இருக்க */
     .emoji {
-      font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
-      -webkit-text-fill-color: initial;
-      background: none;
+      font-family: 'Noto ColorEmoji', 'Apple ColorEmoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+      background: none !important;
+      -webkit-background-clip: initial !important;
+      -webkit-text-fill-color: initial !important;
+      text-shadow: none !important;
+      filter: none !important;
       display: inline-block;
-      margin-left: 4px;
-      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+      margin-left: 6px;
     }
 
     @keyframes textGlow {
@@ -366,7 +368,8 @@
 
     toggleAutoBtn.addEventListener('click', () => {
       autoLaunch = !autoLaunch;
-      toggleAutoBtn.innerText = autoLaunch ? "⏸ Pause Auto Launch" : "▶ Start Auto Launch";
+      toggleautoBtnText = autoLaunch ? "⏸ Pause Auto Launch" : "▶ Start Auto Launch";
+      toggleAutoBtn.innerText = toggleautoBtnText;
     });
 
     loop();
